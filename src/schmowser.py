@@ -9,6 +9,8 @@ import logging.config
 import re
 import subprocess
 
+from os import path
+
 #-------------------------------------------------------------------------------
 # read command line options
 argp = argparse.ArgumentParser(description='schmowser: an app routing utility')
@@ -52,16 +54,10 @@ logging.debug('[conf] config file loaded: %s', args.config)
 def launch(app, *argv):
     logging.info('Launching App: %s -- %s', app, ','.join(argv))
 
-    # global applications
-    apps = gconf['Applications']
-
-    if app not in apps:
+    app_path = get_app_path(app)
+    if app_path is None:
         logging.error('invalid app: %s', app)
-        return False
-
-    # load the correct app
-    app_path = apps[app]
-    logging.debug('-- application path: %s', app_path)
+        return
 
     # TODO add DryRun option to global config
     # TODO use shlex.quote on path and argv
@@ -69,13 +65,35 @@ def launch(app, *argv):
     # launch the correct application for the parameter
     if args.debug is False:
         # XXX should we care if the open call fails?  e.g. a bad app path
+        logging.debug('starting application process')
         subprocess.call(['open', '-a', app_path, *argv])
 
     return True
 
 ################################################################################
+# load the path to a given app
+def get_app_path(app):
+    # global applications
+    apps = gconf['Applications']
+
+    if app not in apps:
+        logging.debug('-- no path for app: %s', app)
+        return None
+
+    # load the correct app
+    app_path = apps[app]
+
+    if not path.exists(app_path):
+        logging.debug('-- invalid path: %s', app_path)
+        return None
+
+    logging.debug('-- application path: %s', app_path)
+
+    return app_path
+
+################################################################################
 # find the app for a given input parameter
-def get_app(app, *argv):
+def get_app(param):
     app = None
 
     # load global handlers
