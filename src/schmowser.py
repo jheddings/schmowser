@@ -94,6 +94,8 @@ def get_app_path(app):
 ################################################################################
 # find the app for a given input parameter
 def get_app(param):
+    logging.debug('-- retrieving app for: %s', param)
+
     app = None
 
     # load global handlers
@@ -101,12 +103,14 @@ def get_app(param):
 
     # look through each handler to find a match
     for handler in handlers:
-        logging.debug('-- match: %s', handler)
+        logging.debug('-- checking: %s', handler)
         m = re.match(handler, param)
 
+        # XXX should we stop on a match or let the last one win?
         if m is not None:
             app = handlers[handler]
             logging.debug('-- match FOUND: %s', app)
+            break
 
     # if nothing matched, use the default
     if app is None:
