@@ -8,7 +8,6 @@ import logging.config
 
 import re
 import subprocess
-import shlex
 
 #-------------------------------------------------------------------------------
 # read command line options
@@ -65,6 +64,7 @@ def launch(app, *argv):
     logging.debug('-- application path: %s', app_path)
 
     # TODO add DryRun option to global config
+    # TODO use shlex.quote on path and argv
 
     # launch the correct application for the parameter
     if args.debug is False:
