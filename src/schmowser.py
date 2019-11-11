@@ -12,47 +12,74 @@ import shlex
 
 #-------------------------------------------------------------------------------
 # read command line options
-argp = argparse.ArgumentParser(description='schmowser: a link routing utility')
+argp = argparse.ArgumentParser(description='schmowser: an app routing utility')
 
 # TODO correct the default config path...
-argp.add_argument('-f', '--config', default='.schmowserc',
+argp.add_argument('--config', default='.schmowserc',
                   help='configuration file (default: ~/.schmowserc)')
+
+argp.add_argument('--debug', default=False, action='store_true',
+                  help='enable debugging mode (default: False)')
 
 argp.add_argument('params', nargs=argparse.REMAINDER)
 
 args = argp.parse_args()
-conf = { }
+gconf = { }
 
 #-------------------------------------------------------------------------------
 # load user configuration options
 with open(args.config) as config_file:
-    conf = yaml.load(config_file, Loader=yaml.CLoader)
+    gconf = yaml.load(config_file, Loader=yaml.CLoader)
 
-# configure logging first - used by other config options
-# TODO turn off output if no logging config
-conf_logging = conf['Logging']
-logging.config.dictConfig(conf_logging)
-
-logging.debug('[conf] config file loaded: %s', args.config)
+# TODO error checking on config file structure
 
 # load configuration options
-options = conf['Options']
+options = gconf['Options']
+
+# configure logging and setup debug options
+if args.debug is True:
+    logging.basicConfig(level=logging.DEBUG)
+
+elif 'Logging' in gconf:
+    logging.config.dictConfig(gconf['Logging'])
 
 default_app = options['DefaultApp']
 logging.debug('[conf] default app: %s', default_app)
 
-# load applications
-apps = conf['Applications']
-handlers = conf['Handlers']
+logging.debug('[conf] config file loaded: %s', args.config)
 
 ################################################################################
-## MAIN ENTRY
+# launch the given application
+def launch(app, *argv):
+    logging.info('Launching App: %s -- %s', app, ','.join(argv))
 
-# process each of the parameters
-for param in args.params:
-    logging.debug('processing input parameter: %s', param)
+    # global applications
+    apps = gconf['Applications']
 
+    if app not in apps:
+        logging.error('invalid app: %s', app)
+        return False
+
+    # load the correct app
+    app_path = apps[app]
+    logging.debug('-- application path: %s', app_path)
+
+    # TODO add DryRun option to global config
+
+    # launch the correct application for the parameter
+    if args.debug is False:
+        # XXX should we care if the open call fails?  e.g. a bad app path
+        subprocess.call(['open', '-a', app_path, *argv])
+
+    return True
+
+################################################################################
+# find the app for a given input parameter
+def get_app(app, *argv):
     app = None
+
+    # load global handlers
+    handlers = gconf['Handlers']
 
     # look through each handler to find a match
     for handler in handlers:
@@ -68,10 +95,15 @@ for param in args.params:
         app = default_app
         logging.debug('-- match NOT FOUND, using default: %s', app)
 
-    # load the correct app
-    app_path = apps[app]
-    logging.debug('-- using app: %s', app_path)
+    return app
 
-    # launch the correct application for the parameter
-    subprocess.call(['open', param, '-a', app_path])
+################################################################################
+## MAIN ENTRY
 
+# process each of the parameters
+for param in args.params:
+    logging.debug('processing input parameter: %s', param)
+
+    app = get_app(param)
+
+    launch(app, param)

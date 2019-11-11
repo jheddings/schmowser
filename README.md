@@ -39,3 +39,10 @@ Handlers are specified in a dictionary using a regular expression syntax.
 
 Schmowser supports the built-in Python logging facility.  This may be configured according
 to the dictConfig syntax under a `Logging` section in the user configuration file.
+
+## TODO
+
+There is still much to do with this script / app...
+
+- Make it into an app and register as the default handler.
+- Handle more options from `open`, such as `--new`.
