@@ -16,7 +16,7 @@ RMDIR := rm -Rvf
 PY2APP := $(PY) $(SRCDIR)/setup.py py2app --dist-dir=$(DIST_DIR) --bdist-base=$(BUILD_DIR)
 
 ################################################################################
-.PHONY: all build rebuild clean distclean
+.PHONY: all build rebuild run clean distclean
 
 ################################################################################
 all: build
@@ -31,6 +31,10 @@ build: clean
 ################################################################################
 dist: distclean
 	cd $(BASEDIR) && $(PY2APP) --strip -O1
+
+################################################################################
+run: dist
+	cd $(DIST_DIR) && open -a schmowser.app
 
 ################################################################################
 clean:
