@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+# schmowser - a.k.a browser-shmowser
 
 import os
 
