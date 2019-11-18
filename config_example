@@ -36,6 +36,7 @@ Logging:
   loggers:
     schmowser:
       level: INFO
+      propagate: False
       handlers: [console]
 
   handlers:
