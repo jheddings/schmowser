@@ -11,11 +11,15 @@ class Schmowser():
     #---------------------------------------------------------------------------
     def __init__(self):
         self.logger = logging.getLogger('schmowser')
+        self.logger.debug('initializing app instance')
 
         self.apps = { }
         self.handlers = { }
 
-        self.default_app_name = None
+        # make sure that Safari can run if all else fails
+        self.add_app('Safari', '/Applications/Safari.app')
+        self.default_app_name = 'Safari'
+
         self.dry_run = False
 
     #---------------------------------------------------------------------------
