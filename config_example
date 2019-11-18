@@ -17,4 +17,37 @@ Handlers:
   '^http.*drive.google.com/.*$': Chrome
   '^http.*apple.com/.*$': Safari
 
+# configure logging (optional)
+Logging:
+  version: 1
+  disable_existing_loggers: False
+
+  formatters:
+    brief:
+      format: '%(message)s'
+    precise:
+      format: '%(asctime)s %(levelname)-8s %(name)-15s %(message)s'
+      datefmt: '%Y-%m-%d %H:%M:%S'
+
+  root:
+    level: INFO
+    handlers: [console]
+
+  loggers:
+    schmowser:
+      level: INFO
+      handlers: [console]
+
+  handlers:
+    console:
+      class: logging.StreamHandler
+      formatter: brief
+      stream: ext://sys.stdout
+    logfile:
+      class : logging.handlers.RotatingFileHandler
+      formatter: precise
+      filename: schmowser.log
+      maxBytes: 1048576
+      backupCount: 3
+
 # vim: ft=yaml

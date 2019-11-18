@@ -176,6 +176,8 @@ def main():
     args = parse_args()
     conf = load_config(args)
 
+    logging.debug('initializing app')
+
     app = Schmowser()
     configure_app(app, conf)
 
