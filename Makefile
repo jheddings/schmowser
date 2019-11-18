@@ -11,7 +11,11 @@ DIST_DIR ?= $(BASEDIR)/dist
 PY := /usr/local/bin/python3
 DELETE := rm -vf
 RMDIR := rm -Rvf
+COPY := cp -avf
 PY2APP := $(PY) setup.py py2app --dist-dir=$(DIST_DIR) --bdist-base=$(BUILD_DIR)
+
+APPNAME := Schmowser.app
+APPDIR := $(HOME)/Applications
 
 ################################################################################
 .PHONY: all build rebuild run clean distclean
@@ -31,8 +35,9 @@ dist: distclean
 	cd $(BASEDIR) && $(PY2APP) --strip -O1
 
 ################################################################################
-run: dist
-	cd $(DIST_DIR) && open -a Schmowser.app
+install: dist
+	[ -d "$(APPDIR)/$(APPNAME)" ] && $(RMDIR) $(APPDIR)/$(APPNAME)
+	$(COPY) $(DIST_DIR)/$(APPNAME) $(APPDIR)
 
 ################################################################################
 clean:
