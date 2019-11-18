@@ -23,7 +23,7 @@ class Schmowser():
         self.logger.debug('adding app: %s = %s', app_name, app_path)
 
         if not os.path.exists(app_path):
-            self.logger.error('invalid app path: %s', app_path)
+            self.logger.warning('invalid app path: %s', app_path)
             return False
 
         old_path = self.apps.pop(app_name, None)
@@ -165,12 +165,10 @@ def configure_app(app, conf):
 
     options = conf['Options']
 
-    # TODO handle the case if they are not present in the config...
-
-    app.default_app_name = options['DefaultApp']
+    app.default_app_name = options.get('DefaultApp', None)
     logging.debug('[conf] default app: %s', app.default_app_name)
 
-    app.dry_run = options['DryRun']
+    app.dry_run = options.get('DryRun', False)
     logging.debug('[conf] dry run: %s', app.dry_run)
 
 ################################################################################
