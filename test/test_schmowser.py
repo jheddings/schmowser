@@ -10,13 +10,20 @@ logging.basicConfig(level=logging.ERROR)
 class SchmowserObjectTest(unittest.TestCase):
 
     #---------------------------------------------------------------------------
-    def test_DefaultAppName(self):
+    def test_EmptyAppsDefaultName(self):
+        app = schmowser.Schmowser(discover_apps=False)
+        app_name = app.get_app_name('http://www.foo.com/')
+        self.assertIsNone(app_name)
+
+    #---------------------------------------------------------------------------
+    def test_DiscoverAppsDefaultName(self):
         app = schmowser.Schmowser()
-        self.assertIsNotNone(app.default_app_name)
+        app_name = app.get_app_name('http://www.foo.com/')
+        self.assertIsNotNone(app_name)
 
     #---------------------------------------------------------------------------
     def test_BasicAppMatch(self):
-        app = schmowser.Schmowser()
+        app = schmowser.Schmowser(discover_apps=False)
         app.add_app('Foo', '/usr/bin/true')
         app.add_handler('^http://.*foo.*$', 'Foo')
 

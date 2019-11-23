@@ -9,20 +9,26 @@ import logging.config
 class Schmowser():
 
     #---------------------------------------------------------------------------
-    def __init__(self):
+    def __init__(self, discover_apps=True):
         self.logger = logging.getLogger('schmowser')
         self.logger.debug('initializing')
 
         self.apps = { }
         self.handlers = { }
 
-        self._discover_apps()
-
+        self.default_app_name = None
         self.dry_run = False
+
+        if discover_apps is True:
+            self._discover_apps()
 
     #---------------------------------------------------------------------------
     def add_app(self, app_name, app_path):
         self.logger.debug('adding app: %s => %s', app_name, app_path)
+
+        if app_name is None:
+            self.logger.warning('invalid app name: %s', app_name)
+            return False
 
         if not os.path.exists(app_path):
             self.logger.warning('invalid app path: %s', app_path)
@@ -34,9 +40,11 @@ class Schmowser():
 
         self.apps[app_name] = app_path
 
+        return True
+
     #---------------------------------------------------------------------------
     def add_handler(self, expr, app_name):
-        self.logger.debug('adding handler: %s = %s', expr, app_name)
+        self.logger.debug('registering handler: %s = %s', expr, app_name)
 
         if app_name not in self.apps:
             self.logger.error('invalid app name: %s', app_name)
@@ -98,31 +106,45 @@ class Schmowser():
 
     #---------------------------------------------------------------------------
     def _discover_apps(self):
-        self.logger.debug('loading pre-installed apps')
+        import glob
 
-        # XXX would it be better to load the plist file and get CFBundleDisplayName?
+        # NOTE we only load the main Applications automatically...  apps stored
+        # in sub folders (like Utilities) will need to be added by the user
 
-        if os.path.exists('/Applications/Safari.app'):
-            self.add_app('Safari', '/Applications/Safari.app')
+        self.logger.debug('loading system apps')
+        for app_dir in glob.glob('/Applications/*.app'):
+            self._add_app_from_path(app_dir)
 
-        if os.path.exists('/Applications/Google Chrome.app'):
-            self.add_app('Google Chrome', '/Applications/Google Chrome.app')
-            self.add_app('Chrome', '/Applications/Google Chrome.app')
-
-        if os.path.exists('/Applications/Firefox.app'):
-            self.add_app('Firefox', '/Applications/Firefox.app')
-
-        if os.path.exists('/Applications/Opera.app'):
-            self.add_app('Opera', '/Applications/Opera.app')
+        # TODO add user ~/Applications directory
 
         self._choose_default_app()
 
     #---------------------------------------------------------------------------
+    def _add_app_from_path(self, app_dir):
+        self.logger.debug('loading app: %s', app_dir)
+
+        info_path = os.path.join(app_dir, 'Contents/Info.plist')
+
+        if not os.path.exists(info_path):
+            self.logger.warn('app info not found: %s', info_path)
+            return None
+
+        self.logger.debug('reading app info: %s', info_path)
+        app_info = AppInfo.load(info_path)
+        app_name = app_info.get_name()
+
+        self.add_app(app_name, app_dir)
+
+        return app_name
+
+    #---------------------------------------------------------------------------
     def _choose_default_app(self):
+        # XXX is there a better way to pick the default? something more dynamic?
+
         if 'Safari' in self.apps:
             self.default_app_name = 'Safari'
-        elif 'Chrome' in self.apps:
-            self.default_app_name = 'Chrome'
+        elif 'Google Chrome' in self.apps:
+            self.default_app_name = 'Google Chrome'
         elif 'Firefox' in self.apps:
             self.default_app_name = 'Firefox'
         elif 'Opera' in self.apps:
@@ -156,6 +178,41 @@ class Schmowser():
         return True
 
 ################################################################################
+class AppInfo():
+
+    #---------------------------------------------------------------------------
+    def __init__(self, info=None):
+        self.logger = logging.getLogger('appinfo')
+
+        if info is None:
+            self.logger.debug('initializing empty info')
+            self.info = dict()
+        else:
+            self.logger.debug('initializing user info')
+            self.info = info
+
+    #---------------------------------------------------------------------------
+    def get(self, key):
+        self.logger.debug('searching for key: %s', key)
+
+        val = self.info.get(key, None)
+
+        return val
+
+    #---------------------------------------------------------------------------
+    def get_name(self):
+        return self.get('CFBundleName')
+
+    #---------------------------------------------------------------------------
+    def load(path):
+        import plistlib
+
+        with open(path, 'rb') as plist_file:
+            info = plistlib.load(plist_file)
+
+        return AppInfo(info=info)
+
+################################################################################
 def parse_args():
     import argparse
 
@@ -177,7 +234,7 @@ def load_config(args):
         logging.warning('config file does not exist: %s', args.config)
         return None
 
-    with open(args.config) as config_file:
+    with open(args.config, 'r') as config_file:
         conf = yaml.load(config_file, Loader=yaml.CLoader)
 
     # TODO error checking on config file structure
