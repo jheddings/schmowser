@@ -99,6 +99,8 @@ class Schmowser():
 
     #---------------------------------------------------------------------------
     def _discover_apps(self):
+        self.logger.debug('loading pre-installed apps')
+
         if os.path.exists('/Applications/Safari.app'):
             self.add_app('Safari', '/Applications/Safari.app')
 
@@ -121,6 +123,9 @@ class Schmowser():
             self.default_app_name = 'Firefox'
         elif 'Opera' in self.apps:
             self.default_app_name = 'Opera'
+        else:
+            self.default_app_name = None
+            self.logger.warning('Could not initialize default app')
 
         self.logger.debug('initialized default app: %s', self.default_app_name)
 
