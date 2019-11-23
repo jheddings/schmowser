@@ -1,6 +1,6 @@
 # Makefile for schmowser
 
-BASEDIR ?= .
+BASEDIR ?= $(PWD)
 SRCDIR ?= $(BASEDIR)/src
 
 BUILD_DIR ?= $(BASEDIR)/build
@@ -31,11 +31,7 @@ build: clean test
 	cd $(BASEDIR) && $(PY2APP) --alias --no-strip -O0
 
 ################################################################################
-test: build test
-	$(PY) -m unittest discover -v -s $(BASEDIR)/test
-
-################################################################################
-dist: distclean
+dist: distclean test
 	cd $(BASEDIR) && $(PY2APP) --strip -O1
 
 ################################################################################
@@ -44,8 +40,14 @@ install: dist
 	$(COPY) $(DIST_DIR)/$(APPNAME) $(APPDIR)
 
 ################################################################################
+test:
+	$(PY) -m unittest discover -v -s $(BASEDIR)/test
+
+################################################################################
 clean:
+	$(RMDIR) $(SRCDIR)/__pycache__
 	$(RMDIR) $(BASEDIR)/__pycache__
+	$(RMDIR) $(BASEDIR)/test/__pycache__
 	$(RMDIR) $(BUILD_DIR)
 
 ################################################################################
