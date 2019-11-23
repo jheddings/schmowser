@@ -8,7 +8,7 @@ DIST_DIR ?= $(BASEDIR)/dist
 
 # commands used in the makefile
 #PY := $(shell which python)
-PY := /usr/local/bin/python3
+PY := PYTHONPATH="$(SRCDIR)" /usr/local/bin/python3
 DELETE := rm -vf
 RMDIR := rm -Rvf
 COPY := cp -avf
@@ -29,6 +29,10 @@ rebuild: distclean build
 ################################################################################
 build: clean
 	cd $(BASEDIR) && $(PY2APP) --alias --no-strip -O0
+
+################################################################################
+test: build
+	$(PY) -m unittest discover -v -s $(BASEDIR)/test
 
 ################################################################################
 dist: distclean

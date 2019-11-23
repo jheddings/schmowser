@@ -100,6 +100,8 @@ class Schmowser():
     def _discover_apps(self):
         self.logger.debug('loading pre-installed apps')
 
+        # XXX would it be better to load the plist file and get CFBundleDisplayName?
+
         if os.path.exists('/Applications/Safari.app'):
             self.add_app('Safari', '/Applications/Safari.app')
 
