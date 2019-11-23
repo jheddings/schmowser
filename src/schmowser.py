@@ -17,7 +17,6 @@ class Schmowser():
         self.handlers = { }
 
         self._discover_apps()
-        self._choose_default_app()
 
         self.dry_run = False
 
@@ -112,6 +111,8 @@ class Schmowser():
 
         if os.path.exists('/Applications/Opera.app'):
             self.add_app('Opera', '/Applications/Opera.app')
+
+        self._choose_default_app()
 
     #---------------------------------------------------------------------------
     def _choose_default_app(self):
