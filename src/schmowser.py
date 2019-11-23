@@ -115,7 +115,10 @@ class Schmowser():
         for app_dir in glob.glob('/Applications/*.app'):
             self._add_app_from_path(app_dir)
 
-        # TODO add user ~/Applications directory
+        self.logger.debug('loading user apps')
+        user_dir = os.path.expanduser('~/Applications')
+        for app_dir in glob.glob(user_dir + '/*.app'):
+            self._add_app_from_path(app_dir)
 
         self._choose_default_app()
 
@@ -133,7 +136,8 @@ class Schmowser():
         app_info = AppInfo.load(info_path)
         app_name = app_info.get_name()
 
-        self.add_app(app_name, app_dir)
+        if app_name is not None:
+            self.add_app(app_name, app_dir)
 
         return app_name
 
