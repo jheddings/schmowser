@@ -11,7 +11,7 @@ class Schmowser():
     #---------------------------------------------------------------------------
     def __init__(self):
         self.logger = logging.getLogger('schmowser')
-        self.logger.debug('initializing app instance')
+        self.logger.debug('initializing')
 
         self.apps = { }
         self.handlers = { }
@@ -130,9 +130,6 @@ def parse_args():
     argp.add_argument('--config', default='.schmowserc',
                       help='configuration file (default: ~/.schmowserc)')
 
-    argp.add_argument('--debug', default=False, action='store_true',
-                      help='enable debugging mode (default: False)')
-
     argp.add_argument('params', nargs=argparse.REMAINDER)
 
     return argp.parse_args()
@@ -141,16 +138,16 @@ def parse_args():
 def load_config(args):
     import yaml
 
+    if not os.path.exists(args.config):
+        logging.warning('config file does not exist: %s', args.config)
+        return None
+
     with open(args.config) as config_file:
         conf = yaml.load(config_file, Loader=yaml.CLoader)
 
     # TODO error checking on config file structure
 
-    # configure logging and setup debug options
-    if args.debug is True:
-        logging.basicConfig(level=logging.DEBUG)
-
-    elif 'Logging' in conf:
+    if 'Logging' in conf:
         logging.config.dictConfig(conf['Logging'])
 
     logging.debug('config file loaded: %s', args.config)
@@ -183,7 +180,9 @@ def main():
     logging.debug('initializing main application')
 
     app = Schmowser()
-    configure_app(app, conf)
+
+    if conf is not None:
+        configure_app(app, conf)
 
     for param in args.params:
         app.route(param)
