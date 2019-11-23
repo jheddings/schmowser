@@ -18,7 +18,7 @@ APPNAME := Schmowser.app
 APPDIR := $(HOME)/Applications
 
 ################################################################################
-.PHONY: all build rebuild run clean distclean
+.PHONY: all build rebuild test clean distclean
 
 ################################################################################
 all: build
@@ -27,11 +27,11 @@ all: build
 rebuild: distclean build
 
 ################################################################################
-build: clean
+build: clean test
 	cd $(BASEDIR) && $(PY2APP) --alias --no-strip -O0
 
 ################################################################################
-test: build
+test: build test
 	$(PY) -m unittest discover -v -s $(BASEDIR)/test
 
 ################################################################################
