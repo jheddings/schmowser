@@ -222,8 +222,8 @@ def parse_args():
 
     argp = argparse.ArgumentParser(description='schmowser: an app routing utility')
 
-    # TODO correct the default config path...
-    argp.add_argument('--config', default='.schmowserc',
+    default_conf = os.path.expanduser('~/.schmowserc')
+    argp.add_argument('--config', default=default_conf,
                       help='configuration file (default: ~/.schmowserc)')
 
     argp.add_argument('params', nargs=argparse.REMAINDER)
