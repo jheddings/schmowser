@@ -104,6 +104,7 @@ class Schmowser():
             self.add_app('Safari', '/Applications/Safari.app')
 
         if os.path.exists('/Applications/Google Chrome.app'):
+            self.add_app('Google Chrome', '/Applications/Google Chrome.app')
             self.add_app('Chrome', '/Applications/Google Chrome.app')
 
         if os.path.exists('/Applications/Firefox.app'):
