@@ -16,15 +16,14 @@ class Schmowser():
         self.apps = { }
         self.handlers = { }
 
-        # make sure that Safari can run if all else fails
-        self.add_app('Safari', '/Applications/Safari.app')
-        self.default_app_name = 'Safari'
+        self._discover_apps()
+        self._choose_default_app()
 
         self.dry_run = False
 
     #---------------------------------------------------------------------------
     def add_app(self, app_name, app_path):
-        self.logger.debug('adding app: %s = %s', app_name, app_path)
+        self.logger.debug('adding app: %s => %s', app_name, app_path)
 
         if not os.path.exists(app_path):
             self.logger.warning('invalid app path: %s', app_path)
@@ -98,7 +97,34 @@ class Schmowser():
 
         self._launch(app_name, param)
 
-    ################################################################################
+    #---------------------------------------------------------------------------
+    def _discover_apps(self):
+        if os.path.exists('/Applications/Safari.app'):
+            self.add_app('Safari', '/Applications/Safari.app')
+
+        if os.path.exists('/Applications/Google Chrome.app'):
+            self.add_app('Chrome', '/Applications/Google Chrome.app')
+
+        if os.path.exists('/Applications/Firefox.app'):
+            self.add_app('Firefox', '/Applications/Firefox.app')
+
+        if os.path.exists('/Applications/Opera.app'):
+            self.add_app('Opera', '/Applications/Opera.app')
+
+    #---------------------------------------------------------------------------
+    def _choose_default_app(self):
+        if 'Safari' in self.apps:
+            self.default_app_name = 'Safari'
+        elif 'Chrome' in self.apps:
+            self.default_app_name = 'Chrome'
+        elif 'Firefox' in self.apps:
+            self.default_app_name = 'Firefox'
+        elif 'Opera' in self.apps:
+            self.default_app_name = 'Opera'
+
+        self.logger.debug('initialized default app: %s', self.default_app_name)
+
+    #---------------------------------------------------------------------------
     # launch the given application
     def _launch(self, app_name, *argv):
         import subprocess
