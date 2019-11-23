@@ -7,15 +7,14 @@ BUILD_DIR ?= $(BASEDIR)/build
 DIST_DIR ?= $(BASEDIR)/dist
 
 # commands used in the makefile
-#PY := $(shell which python)
-PY := PYTHONPATH="$(SRCDIR)" /usr/local/bin/python3
+PY := PYTHONPATH="$(SRCDIR)" $(shell which python3)
 DELETE := rm -vf
 RMDIR := rm -Rvf
 COPY := cp -avf
 PY2APP := $(PY) setup.py py2app --dist-dir=$(DIST_DIR) --bdist-base=$(BUILD_DIR)
 
-APPNAME := Schmowser.app
-APPDIR := $(HOME)/Applications
+APPNAME ?= Schmowser.app
+APPDIR ?= $(HOME)/Applications
 
 ################################################################################
 .PHONY: all build rebuild test clean distclean
@@ -36,7 +35,7 @@ dist: distclean test
 
 ################################################################################
 install: dist
-	[ -d "$(APPDIR)/$(APPNAME)" ] && $(RMDIR) $(APPDIR)/$(APPNAME)
+	$(RMDIR) $(APPDIR)/$(APPNAME)
 	$(COPY) $(DIST_DIR)/$(APPNAME) $(APPDIR)
 
 ################################################################################
