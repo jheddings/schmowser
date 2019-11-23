@@ -143,8 +143,8 @@ class Schmowser():
 
         if 'Safari' in self.apps:
             self.default_app_name = 'Safari'
-        elif 'Google Chrome' in self.apps:
-            self.default_app_name = 'Google Chrome'
+        elif 'Chrome' in self.apps:
+            self.default_app_name = 'Chrome'
         elif 'Firefox' in self.apps:
             self.default_app_name = 'Firefox'
         elif 'Opera' in self.apps:
