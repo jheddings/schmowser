@@ -8,8 +8,6 @@ DIST_DIR ?= $(BASEDIR)/dist
 PYENV_DIR ?= $(BASEDIR)/.pyenv
 
 # commands used in the makefile
-PYENV := source $(PYENV_DIR)/bin/active &&
-# XXX can the virtualenv add the source path automatically?
 PY := PYTHONPATH="$(SRCDIR)" python3
 DELETE := rm -vf
 RMDIR := rm -Rvf
