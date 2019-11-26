@@ -9,7 +9,8 @@ PYENV_DIR ?= $(BASEDIR)/.pyenv
 
 # commands used in the makefile
 PYENV := source $(PYENV_DIR)/bin/active &&
-PY := PYTHONPATH="$(SRCDIR)" $(shell which python3)
+# XXX can the virtualenv add the source path automatically?
+PY := PYTHONPATH="$(SRCDIR)" python3
 DELETE := rm -vf
 RMDIR := rm -Rvf
 COPY := cp -avf
@@ -20,7 +21,7 @@ APPNAME ?= Schmowser.app
 APPDIR ?= $(HOME)/Applications
 
 ################################################################################
-.PHONY: all env build rebuild test clean distclean
+.PHONY: all env build rebuild test clean cleanenv distclean
 
 ################################################################################
 all: env build
