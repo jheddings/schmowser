@@ -41,18 +41,18 @@ rebuild: clean build
 
 ################################################################################
 build: clean test
-	$(PY2APP) --alias --no-strip -O0
+	$(PY2APP) --alias --argv-emulation --no-strip -O0
 
 ################################################################################
 dist: clean test
-	$(PY2APP) --strip -O1
+	$(PY2APP) --argv-emulation --strip -O1
 
 ################################################################################
 install: dist
 	$(RMDIR) $(APPDIR)/$(APPNAME)
 	$(MOVE) $(DIST_DIR)/$(APPNAME) $(APPDIR)
 	[ -f $(APPCFG) ] || $(COPY) $(BASEDIR)/config_example $(APPCFG)
-	cd $(APPDIR) && open -a Schmowser
+	cd $(APPDIR) && open -a Schmowser --hide
 
 ################################################################################
 test:
