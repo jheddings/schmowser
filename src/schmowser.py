@@ -273,7 +273,7 @@ def main():
     args = parse_args()
     conf = load_config(args)
 
-    logging.debug('initializing main application')
+    logging.debug('== initializing main application ==')
 
     app = Schmowser()
 
