@@ -1,23 +1,25 @@
 # schmowser sample configuration file
 
-# list of applications that may be referenced in this config file
+#-------------------------------------------------------------------------------
+# installed applications are discovered automatically...  additional apps
+# or aliases can be provided manually
 Applications:
   Chrome: '/Applications/Google Chrome.app'
   Safari: '/Applications/Safari.app'
-  Firefox: '/Applications/Firefox.app'
 
+#-------------------------------------------------------------------------------
 # global options
 Options:
   DefaultApp: Safari
 
+#-------------------------------------------------------------------------------
 # configure handlers for applications
 Handlers:
   '^http.*goo.gl/.*$': Chrome
-  '^http.*docs.google.com/.*$': Chrome
-  '^http.*drive.google.com/.*$': Chrome
   '^http.*apple.com/.*$': Safari
 
-# configure logging (optional)
+#-------------------------------------------------------------------------------
+# setup logging system -- or remove this sectoin to disable logging
 Logging:
   version: 1
 
@@ -29,14 +31,18 @@ Logging:
       datefmt: '%Y-%m-%d %H:%M:%S'
 
   root:
-    level: INFO
-    handlers: [console]
+    level: WARN
+    handlers: [logfile]
 
   loggers:
     schmowser:
-      level: INFO
+      level: WARN
       propagate: False
-      handlers: [console]
+      handlers: [logfile]
+    appinfo:
+      level: WARN
+      propagate: False
+      handlers: [logfile]
 
   handlers:
     console:

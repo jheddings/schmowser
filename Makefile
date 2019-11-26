@@ -19,9 +19,10 @@ PY2APP := $(PY) setup.py py2app --dist-dir=$(DIST_DIR) --bdist-base=$(BUILD_DIR)
 
 APPNAME ?= Schmowser.app
 APPDIR ?= $(HOME)/Applications
+APPCFG ?= $(HOME)/.schmowserc
 
 ################################################################################
-.PHONY: all env build rebuild test clean cleanenv distclean
+.PHONY: all env build rebuild test clean cleanenv
 
 ################################################################################
 all: env build
@@ -35,7 +36,7 @@ env:
 	$(PRINT) "# source $(PYENV_DIR)/bin/activate"
 
 ################################################################################
-rebuild: distclean build
+rebuild: clean build
 
 ################################################################################
 build: clean test
@@ -49,6 +50,8 @@ dist: distclean test
 install: dist
 	$(RMDIR) $(APPDIR)/$(APPNAME)
 	$(COPY) $(DIST_DIR)/$(APPNAME) $(APPDIR)
+	[ -f $(APPCFG) ] || $(COPY) $(BASEDIR)/config_example $(APPCFG)
+	cd $(APPDIR) && open -a Schmowser
 
 ################################################################################
 test:
@@ -58,12 +61,10 @@ test:
 clean:
 	$(RMDIR) $(SRCDIR)/__pycache__
 	$(RMDIR) $(BASEDIR)/__pycache__
-	$(RMDIR) $(BUILD_DIR)
-
-################################################################################
-distclean: clean
-	$(RMDIR) $(DIST_DIR)
+	$(RMDIR) $(BASEDIR)/test/__pycache__
 	$(RMDIR) $(BASEDIR)/.eggs
+	$(RMDIR) $(BUILD_DIR)
+	$(RMDIR) $(DIST_DIR)
 
 ################################################################################
 cleanenv:

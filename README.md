@@ -15,7 +15,11 @@ The following Python libraries are required:
 
 ## Installation
 
-TODO
+    make env
+    source .pyenv/bin/activate
+    make install
+
+Create `~/.schmowserc` config file; use `config_example` as a starting point.
 
 ## Configuration
 
