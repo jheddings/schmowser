@@ -14,6 +14,7 @@ PY := PYTHONPATH="$(SRCDIR)" python3
 DELETE := rm -vf
 RMDIR := rm -Rvf
 COPY := cp -avf
+MOVE := mv -vf
 PRINT := @echo
 PY2APP := $(PY) setup.py py2app --dist-dir=$(DIST_DIR) --bdist-base=$(BUILD_DIR)
 
@@ -49,7 +50,7 @@ dist: clean test
 ################################################################################
 install: dist
 	$(RMDIR) $(APPDIR)/$(APPNAME)
-	$(COPY) $(DIST_DIR)/$(APPNAME) $(APPDIR)
+	$(MOVE) $(DIST_DIR)/$(APPNAME) $(APPDIR)
 	[ -f $(APPCFG) ] || $(COPY) $(BASEDIR)/config_example $(APPCFG)
 	cd $(APPDIR) && open -a Schmowser
 
