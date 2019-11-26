@@ -2,7 +2,7 @@
 
 import setuptools
 
-# this is expecting to run from the base directory of the project
+# TODO need app icons...
 
 # override app bundle metadata
 plist = dict(
