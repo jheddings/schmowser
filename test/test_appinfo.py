@@ -7,6 +7,9 @@ import schmowser
 # keep logging output to a minumim for testing
 logging.basicConfig(level=logging.ERROR)
 
+# TODO add tests for bad Info files
+# TODO add tests for missing keys
+
 ################################################################################
 class AppInfoObjectTests(unittest.TestCase):
 
@@ -29,4 +32,9 @@ class AppInfoObjectTests(unittest.TestCase):
 
         app_version = self.test_info.get_version()
         self.assertIsNotNone(app_version)
+
+    #---------------------------------------------------------------------------
+    def test_NoSuchFile(self):
+        bad_path = '/tmp/NoSuchFile_AppInfo.plist'
+        self.assertRaises(FileNotFoundError, schmowser.AppInfo.load, bad_path)
 
