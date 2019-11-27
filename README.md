@@ -19,34 +19,30 @@ The following Python libraries are required:
     source .pyenv/bin/activate
     make install
 
-Create `~/.schmowserc` config file; use `config_example` as a starting point.
+*NOTE* occasionally the install step will end with an error.  If this happens, you may need
+to run Schmowser manually to register the URL handlers.  Simply double-clicking the app
+from your `~/Applications` folder will do it.
+
+Edit `~/.schmowserc` config file; use `config_example` as a starting point.
+
+Set your default browser to Schmowser under System Preferences -> General.
+
+Give it a spin!
 
 ## Configuration
 
-The configuration file is YAML syntax.
-
-### Options
-
-    DefaultApp: app
-
-### Applications
-
-    app: full_path_to_app_folder
-
-### Handlers
-
-Handlers are specified in a dictionary using a regular expression syntax.
-
-    regex: app
+The configuration file is YAML syntax.  For now, hopefully it is self-explanatory enough to
+get you started.  At least until I get more time to write up the documentation.
 
 ### Logging
 
 Schmowser supports the built-in Python logging facility.  This may be configured according
-to the dictConfig syntax under a `Logging` section in the user configuration file.
+to the dictConfig syntax under a `Logging` section in the user configuration file.  To
+disable logging, simply remove this section.
 
 ## TODO
 
-There is still much to do with this script / app...
-
-- Make it into an app and register as the default handler.
-- Handle more options from `open`, such as `--new`.
+- Improve the overall install experience.
+- Look into releasing the app as an installable package bundle.
+- Improve performance when opening links.
+- Prevent the app from bouncing in the dock when clicking links.
