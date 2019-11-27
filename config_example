@@ -53,10 +53,9 @@ Logging:
       formatter: brief
       stream: ext://sys.stdout
     logfile:
-      class : logging.handlers.RotatingFileHandler
+      class : logging.FileHandler
       formatter: precise
       filename: schmowser.log
-      maxBytes: 1048576
-      backupCount: 3
+      mode: w
 
 # vim: ft=yaml
