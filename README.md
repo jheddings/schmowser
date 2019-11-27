@@ -45,6 +45,18 @@ Schmowser supports the built-in Python logging facility.  This may be configured
 to the dictConfig syntax under a `Logging` section in the user configuration file.  To
 disable logging, simply remove this section.
 
+## Troubleshooting
+
+Enabling logging may give you some clues about what's happening with the app.  Set the levels
+to `DEBUG` for each handler.  Standard out & standard error are sent to the Console, so a
+log file may be easier to debug.
+
+*NOTE* the current directory for the app is `Schmowser.app/Contents/Resources`.  This is
+where the default log file will be created unless you specify an absolute path.
+
+A great tool for troubleshooting application handlers is
+[RCDefaultApp](http://www.rubicode.com/Software/RCDefaultApp/) from Rubicode.
+
 ## TODO
 
 - Improve the overall install experience.
