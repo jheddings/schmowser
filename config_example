@@ -3,9 +3,17 @@
 #-------------------------------------------------------------------------------
 # installed applications are discovered automatically...  additional apps
 # or aliases can be provided manually
+# format -- appname: /path/to/app
 Applications:
   Chrome: '/Applications/Google Chrome.app'
   Safari: '/Applications/Safari.app'
+
+#-------------------------------------------------------------------------------
+# configure handlers for applications
+# format -- regex: appname
+Handlers:
+  '^http.*goo.gl/.*$': Chrome
+  '^http.*apple.com/.*$': Safari
 
 #-------------------------------------------------------------------------------
 # global options
@@ -13,13 +21,8 @@ Options:
   DefaultApp: Safari
 
 #-------------------------------------------------------------------------------
-# configure handlers for applications
-Handlers:
-  '^http.*goo.gl/.*$': Chrome
-  '^http.*apple.com/.*$': Safari
-
-#-------------------------------------------------------------------------------
-# setup logging system -- or remove this sectoin to disable logging
+# setup logging system -- or remove this section to disable logging
+# this uses the standard dict config for the Python logging framework
 Logging:
   version: 1
 
