@@ -26,10 +26,12 @@ class Schmowser():
     def add_app(self, app_name, app_path):
         self.logger.debug('adding app: %s => %s', app_name, app_path)
 
+        # XXX should this raise an exception instead?
         if app_name is None:
             self.logger.warning('invalid app name: %s', app_name)
             return False
 
+        # XXX should this raise an exception instead?
         if not os.path.exists(app_path):
             self.logger.warning('invalid app path: %s', app_path)
             return False
@@ -46,6 +48,7 @@ class Schmowser():
     def add_handler(self, expr, app_name):
         self.logger.debug('registering handler: %s = %s', expr, app_name)
 
+        # XXX should this raise an exception instead?
         if app_name not in self.apps:
             self.logger.error('invalid app name: %s', app_name)
             return False
@@ -97,12 +100,12 @@ class Schmowser():
         return app_path
 
     #---------------------------------------------------------------------------
-    def route(self, param):
+    def open(self, param):
         self.logger.debug('processing input parameter: %s', param)
 
         app_name = self.get_app_name(param)
 
-        self._launch(app_name, param)
+        return self._run_app(app_name, param)
 
     #---------------------------------------------------------------------------
     def _discover_apps(self):
@@ -160,8 +163,8 @@ class Schmowser():
         self.logger.debug('initialized default app: %s', self.default_app_name)
 
     #---------------------------------------------------------------------------
-    # launch the given application
-    def _launch(self, app_name, *argv):
+    # run the given application with specified args
+    def _run_app(self, app_name, *argv):
         import subprocess
 
         self.logger.info('Launching App: %s -- %s', app_name, ','.join(argv))
@@ -285,7 +288,7 @@ def main():
         configure_app(app, conf)
 
     for param in args.params:
-        app.route(param)
+        app.open(param)
 
 ################################################################################
 ## MAIN ENTRY
