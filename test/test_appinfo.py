@@ -5,7 +5,7 @@ import os
 import schmowser
 
 # keep logging output to a minumim for testing
-logging.basicConfig(level=logging.ERROR)
+logging.basicConfig(level=logging.CRITICAL)
 
 # TODO add tests for bad Info files
 # TODO add tests for missing keys
