@@ -17,7 +17,8 @@ plist = dict(
             CFBundleURLName='Local URLs',
             CFBundleURLSchemes=['file']
         )
-    ]
+    ],
+    LSUIElement=True
 )
 
 # perform the bundling using setuptools with py2app

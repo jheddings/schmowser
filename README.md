@@ -51,4 +51,3 @@ disable logging, simply remove this section.
 - Look into releasing the app as an installable package bundle.
 - Find more ways to to test the app.
 - Improve performance when opening links.
-- Prevent the app from bouncing in the dock when clicking links.
