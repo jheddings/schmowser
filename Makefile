@@ -8,7 +8,7 @@ DIST_DIR ?= $(BASEDIR)/dist
 PYENV_DIR ?= $(BASEDIR)/.pyenv
 
 # commands used in the makefile
-PY := PYTHONPATH="$(SRCDIR)" python3
+PY := python3
 DELETE := rm -vf
 RMDIR := rm -Rvf
 COPY := cp -avf
@@ -40,6 +40,7 @@ rebuild: clean build
 ################################################################################
 build: clean test
 	$(PY2APP) --alias --argv-emulation --no-strip -O0
+	$(COPY) $(DIST_DIR)/$(APPNAME)/Contents/Info.plist $(BASEDIR)/test/TestInfo.plist
 
 ################################################################################
 dist: clean test
@@ -54,7 +55,7 @@ install: dist
 
 ################################################################################
 test:
-	$(PY) -m unittest discover -v -s $(BASEDIR)/test
+	cd $(SRCDIR) && $(PY) -m unittest discover -v -s $(BASEDIR)/test
 
 ################################################################################
 clean:

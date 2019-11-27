@@ -12,11 +12,16 @@ earlier versions.
 The following Python libraries are required:
 
 - PyYAML
+- py2app
 
-## Installation
+Alternatively, use `virtualenv` as follows:
 
     make env
     source .pyenv/bin/activate
+
+## Installation
+
+    make test
     make install
 
 *NOTE* occasionally the install step will end with an error.  If this happens, you may need
@@ -44,5 +49,6 @@ disable logging, simply remove this section.
 
 - Improve the overall install experience.
 - Look into releasing the app as an installable package bundle.
+- Find more ways to to test the app.
 - Improve performance when opening links.
 - Prevent the app from bouncing in the dock when clicking links.

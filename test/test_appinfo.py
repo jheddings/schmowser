@@ -27,3 +27,6 @@ class AppInfoObjectTests(unittest.TestCase):
         app_name = self.test_info.get_name()
         self.assertIsNotNone(app_name)
 
+        app_version = self.test_info.get_version()
+        self.assertIsNotNone(app_version)
+

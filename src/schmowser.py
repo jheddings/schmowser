@@ -208,6 +208,10 @@ class AppInfo():
         return self.get('CFBundleName')
 
     #---------------------------------------------------------------------------
+    def get_version(self):
+        return self.get('CFBundleVersion')
+
+    #---------------------------------------------------------------------------
     def load(path):
         import plistlib
 
