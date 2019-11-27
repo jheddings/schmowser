@@ -18,7 +18,13 @@ plist = dict(
             CFBundleURLSchemes=['file']
         )
     ],
-    LSUIElement=True
+
+    LSUIElement=True,  # run in background / no dock icon
+    LSMinimumSystemVersion='10.8.0',
+
+    NSAppTransportSecurity=dict(
+        NSAllowsArbitraryLoads=True
+    ),
 )
 
 # perform the bundling using setuptools with py2app
