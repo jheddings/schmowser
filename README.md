@@ -63,3 +63,6 @@ A great tool for troubleshooting application handlers is
 - Look into releasing the app as an installable package bundle.
 - Find more ways to to test the app.
 - Improve performance when opening links.
+- Handle machine / platform specific config sections.
+- Rename this project to 'schlep' ?
+- Make an app icon - look into `sips`.
