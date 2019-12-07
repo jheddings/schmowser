@@ -1,12 +1,27 @@
 # py2app setup file for schmowser
 
+import os, re
 import setuptools
 
 # TODO need app icons...
 
+#-------------------------------------------------------------------------------
+# determine version information...
+appver_full = None
+if 'APPVER' in os.environ:
+    appver_full = os.environ['APPVER']
+
+# make a short version string...
+appver_short = '0.0.0'
+if appver_full is not None:
+    m = re.search('[0-9]+\.[0-9]+\.[0-9]+', appver_full)
+    if m is not None:
+        appver_short = m.group(0)
+
+#-------------------------------------------------------------------------------
 # override app bundle metadata
 plist = dict(
-    CFBundleVersion='0.1.0',
+    CFBundleVersion=appver_short,
     CFBundleIdentifier='com.heddings.schmowser',
     CFBundleURLTypes=[
         dict(
@@ -27,6 +42,7 @@ plist = dict(
     ),
 )
 
+#-------------------------------------------------------------------------------
 # perform the bundling using setuptools with py2app
 setuptools.setup(
     name='Schmowser',

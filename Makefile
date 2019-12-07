@@ -7,18 +7,21 @@ BUILD_DIR ?= $(BASEDIR)/build
 DIST_DIR ?= $(BASEDIR)/dist
 PYENV_DIR ?= $(BASEDIR)/.pyenv
 
+APPNAME ?= Schmowser.app
+APPDIR ?= $(HOME)/Applications
+APPCFG ?= $(HOME)/.schmowserc
+
+APPVER ?= $(shell git describe)
+PYENV += APPVER=$(APPVER)
+
 # commands used in the makefile
-PY := python3
+PY := $(PYENV) python3
 DELETE := rm -vf
 RMDIR := rm -Rvf
 COPY := cp -avf
 MOVE := mv -vf
 PRINT := @echo
 PY2APP := $(PY) setup.py py2app --dist-dir=$(DIST_DIR) --bdist-base=$(BUILD_DIR)
-
-APPNAME ?= Schmowser.app
-APPDIR ?= $(HOME)/Applications
-APPCFG ?= $(HOME)/.schmowserc
 
 ################################################################################
 .PHONY: all env build rebuild test clean cleanenv
