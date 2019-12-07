@@ -24,7 +24,7 @@ PRINT := @echo
 PY2APP := $(PY) setup.py py2app --dist-dir=$(DIST_DIR) --bdist-base=$(BUILD_DIR)
 
 ################################################################################
-.PHONY: all env build rebuild test clean cleanenv
+.PHONY: all env build rebuild test dist install clean cleanenv
 
 ################################################################################
 all: env build

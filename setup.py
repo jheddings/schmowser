@@ -22,6 +22,8 @@ if appver_full is not None:
 # override app bundle metadata
 plist = dict(
     CFBundleVersion=appver_short,
+    CFBundleShortVersionString=appver_short,
+    CFBundleLongVersionString=appver_full,
     CFBundleIdentifier='com.heddings.schmowser',
     CFBundleURLTypes=[
         dict(
@@ -36,6 +38,8 @@ plist = dict(
 
     LSUIElement=True,  # run in background / no dock icon
     LSMinimumSystemVersion='10.8.0',
+
+    NSHumanReadableCopyright='Copyright Jason Heddings. All Rights Reserved',
 
     NSAppTransportSecurity=dict(
         NSAllowsArbitraryLoads=True
