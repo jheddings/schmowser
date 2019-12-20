@@ -45,6 +45,12 @@ Schmowser supports the built-in Python logging facility.  This may be configured
 to the dictConfig syntax under a `Logging` section in the user configuration file.  To
 disable logging, simply remove this section.
 
+## Performance
+
+On my MacBook Pro, using Python directly to process links takes about 0.2 sec.  On
+the same system, using `open` for links with Schmowser takes up to 0.5 sec with an
+average of 0.35 sec.  The same call to `open` using Safari take 0.1 sec or less.
+
 ## Troubleshooting
 
 Enabling logging may give you some clues about what's happening with the app.  Set the levels
